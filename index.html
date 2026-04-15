@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZaakSite — Websites & Systems for Growing Businesses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#ffffff;
+  --bg2:#f7f7f5;
+  --bg3:#f0efec;
+  --fg:#111111;
+  --fg2:#555555;
+  --fg3:#999999;
+  --border:#e8e6e1;
+  --orange:#ff6b2b;
+  --orange-light:#fff4ef;
+  --orange-dark:#e55a1b;
+  --font-sans:'Be Vietnam Pro',system-ui,sans-serif;
+  --font-serif:'Instrument Serif',Georgia,serif;
+  --font-mono:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --space:clamp(100px,14vh,180px);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-sans);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--orange);color:#fff}
+
+/* ═══════════ LOADER ═══════════ */
+.loader{position:fixed;inset:0;background:var(--bg);z-index:10000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:28px;transition:opacity .8s ease .2s,visibility .8s ease .2s}
+.loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{font-family:var(--font-sans);font-weight:900;font-size:28px;letter-spacing:-1px}
+.loader-logo .z{color:var(--orange)}
+.loader-logo .s{color:var(--fg)}
+.loader-bar{width:140px;height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+.loader-bar::after{content:'';display:block;height:100%;width:0;background:var(--orange);animation:loadFill 2s var(--ease) forwards}
+@keyframes loadFill{to{width:100%}}
+
+/* ═══════════ NAV ═══════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 clamp(24px,5vw,72px);height:72px;display:flex;justify-content:space-between;align-items:center;transition:all .4s ease;background:rgba(255,255,255,0)}
+nav.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--font-sans);font-weight:900;font-size:22px;letter-spacing:-1px;text-decoration:none;display:flex;align-items:baseline}
+.nav-logo .z{color:var(--orange)}
+.nav-logo .s{color:var(--fg)}
+.nav-center{display:flex;gap:36px;align-items:center}
+.nav-center a{color:var(--fg);text-decoration:none;font-size:14px;font-weight:500;transition:color .3s ease;position:relative}
+.nav-center a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--orange);transition:width .35s var(--ease)}
+.nav-center a:hover{color:var(--orange)}
+.nav-center a:hover::after{width:100%}
+.nav-cta{background:var(--fg);color:#fff;padding:10px 28px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;transition:all .3s ease;border:none;cursor:pointer;letter-spacing:.3px}
+.nav-cta:hover{background:var(--orange)}
+@media(max-width:768px){.nav-center{display:none}}
+
+/* ═══════════ REVEALS ═══════════ */
+.sr{opacity:0;transform:translateY(44px);transition:opacity .85s var(--ease-out),transform .85s var(--ease-out)}
+.sr.vis{opacity:1;transform:translateY(0)}
+.sr-d1{transition-delay:.08s}.sr-d2{transition-delay:.16s}.sr-d3{transition-delay:.24s}
+.sr-d4{transition-delay:.32s}.sr-d5{transition-delay:.4s}.sr-d6{transition-delay:.48s}
+.sr-d7{transition-delay:.56s}.sr-d8{transition-delay:.64s}
+
+.container{max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,72px)}
+
+/* ═══════════ HERO ═══════════ */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 60px;position:relative;overflow:hidden}
+.hero-heading{font-family:var(--font-sans);font-weight:800;font-size:clamp(36px,5.8vw,80px);line-height:1.08;letter-spacing:-3px;max-width:820px;margin-bottom:20px;color:var(--fg)}
+.hero-heading .line{display:block;overflow:hidden}
+.hero-heading .line-inner{display:block;transform:translateY(110%);opacity:0}
+.hero-heading .line-inner.anim{animation:heroSlide .85s var(--ease-out) forwards}
+@keyframes heroSlide{to{transform:translateY(0);opacity:1}}
+.hero-heading .highlight{color:var(--orange)}
+.hero-sub{font-size:clamp(15px,1.5vw,18px);color:var(--fg2);max-width:480px;margin:0 auto 36px;line-height:1.7;font-weight:400;opacity:0;transform:translateY(24px);transition:all .8s var(--ease-out) .5s}
+.hero-sub.anim{opacity:1;transform:translateY(0)}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0;transform:translateY(20px);transition:all .8s var(--ease-out) .7s}
+.hero-actions.anim{opacity:1;transform:translateY(0)}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--fg);color:#fff;padding:16px 40px;border-radius:100px;font-family:var(--font-sans);font-size:15px;font-weight:600;text-decoration:none;transition:all .35s ease;border:none;cursor:pointer}
+.btn-primary:hover{background:var(--orange);transform:translateY(-2px);box-shadow:0 12px 36px rgba(255,107,43,.2)}
+.btn-link{display:inline-flex;align-items:center;gap:8px;color:var(--fg2);font-size:14px;font-weight:500;text-decoration:none;padding:16px 8px;transition:color .3s ease}
+.btn-link:hover{color:var(--orange)}
+.btn-link .ln{width:20px;height:1px;background:currentColor;transition:width .3s ease}
+.btn-link:hover .ln{width:32px}
+
+/* Giant brand watermark */
+.hero-watermark{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);font-family:var(--font-sans);font-weight:900;font-size:clamp(80px,14vw,200px);letter-spacing:-6px;color:transparent;-webkit-text-stroke:1.5px var(--border);pointer-events:none;white-space:nowrap;opacity:0;transition:opacity 1s ease 1s}
+.hero-watermark.anim{opacity:1}
+
+/* Hero visual band */
+.hero-visual{width:calc(100% - clamp(48px,10vw,144px));max-width:1200px;margin:60px auto 0;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:21/9;background:var(--orange);opacity:0;transform:translateY(40px) scale(.97);transition:all 1s var(--ease-out) .9s}
+.hero-visual.anim{opacity:1;transform:translateY(0) scale(1)}
+.hero-visual-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* Animated abstract shapes inside hero visual */
+.hv-shape{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;animation:hvFloat 8s ease-in-out infinite}
+.hv-1{width:300px;height:300px;background:#ff8c42;top:-50px;left:10%;animation-delay:0s}
+.hv-2{width:400px;height:400px;background:#ff4500;bottom:-100px;right:5%;animation-delay:3s}
+.hv-3{width:250px;height:250px;background:#ffd700;top:20%;right:30%;animation-delay:1.5s}
+.hv-4{width:200px;height:200px;background:#fff;top:30%;left:35%;opacity:.3;animation-delay:4s}
+@keyframes hvFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-20px) scale(1.08)}}
+.hv-text{position:relative;z-index:2;font-family:var(--font-sans);font-weight:900;font-size:clamp(32px,6vw,72px);color:#fff;letter-spacing:-2px;text-shadow:0 2px 40px rgba(0,0,0,.15)}
+
+/* ═══════════ SECTION LABEL ═══════════ */
+.section-label{font-family:var(--font-mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-label::before{content:'';width:28px;height:1.5px;background:var(--orange)}
+
+/* ═══════════ SECTION HEADING ═══════════ */
+.section-heading{font-size:clamp(28px,3.8vw,52px);font-weight:700;letter-spacing:-1.5px;line-height:1.15;color:var(--fg)}
+.section-heading .serif{font-family:var(--font-serif);font-style:italic;font-weight:400}
+.section-heading .orange{color:var(--orange)}
+
+/* ═══════════ MARQUEE ═══════════ */
+.marquee-wrap{padding:48px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden}
+.marquee-track{display:flex;gap:48px;animation:marqScroll 22s linear infinite;width:max-content}
+.marquee-track:hover{animation-play-state:paused}
+.marquee-word{font-family:var(--font-sans);font-size:clamp(28px,4vw,56px);font-weight:800;white-space:nowrap;color:var(--border);letter-spacing:-2px;transition:color .4s ease}
+.marquee-word:hover{color:var(--orange)}
+.marquee-dot{width:8px;height:8px;background:var(--orange);border-radius:50%;flex-shrink:0;align-self:center}
+@keyframes marqScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ═══════════ SERVICES ═══════════ */
+.services{padding:var(--space) 0}
+.services-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;margin-bottom:64px;align-items:end}
+.services-intro p{color:var(--fg2);font-size:16px;line-height:1.8;font-weight:300}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.svc-card{background:var(--bg2);border-radius:14px;padding:40px 32px;transition:all .45s var(--ease);position:relative;overflow:hidden;cursor:default;border:1px solid transparent}
+.svc-card:hover{background:var(--bg);border-color:var(--border);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.06)}
+.svc-card:hover .svc-num{color:var(--orange)}
+.svc-card:hover .svc-arrow{opacity:1;transform:translate(0,0)}
+.svc-num{font-family:var(--font-mono);font-size:11px;color:var(--fg3);letter-spacing:2px;margin-bottom:24px;transition:color .3s ease}
+.svc-title{font-size:18px;font-weight:700;margin-bottom:10px;letter-spacing:-.3px}
+.svc-text{color:var(--fg2);font-size:14px;line-height:1.7;font-weight:300}
+.svc-arrow{position:absolute;top:32px;right:32px;width:32px;height:32px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;opacity:0;transform:translate(-8px,8px);transition:all .4s var(--ease)}
+
+/* ═══════════ OUTCOMES ═══════════ */
+.outcomes{padding:var(--space) 0}
+.outcomes-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.outcomes-visual{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:4/5;background:var(--bg2)}
+.outcomes-visual-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+/* Abstract graphic inside */
+.ov-ring{position:absolute;border:1.5px solid var(--border);border-radius:50%;animation:ovSpin 20s linear infinite}
+.ov-r1{width:200px;height:200px;top:50%;left:50%;transform:translate(-50%,-50%)}
+.ov-r2{width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);animation-direction:reverse;border-style:dashed}
+.ov-r3{width:400px;height:400px;top:50%;left:50%;transform:translate(-50%,-50%);border-color:var(--orange);opacity:.15}
+@keyframes ovSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.ov-center{width:16px;height:16px;background:var(--orange);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 40px rgba(255,107,43,.3)}
+.ov-dot{position:absolute;width:8px;height:8px;background:var(--fg);border-radius:50%;animation:ovDot 20s linear infinite}
+.ov-dot-1{top:50%;left:50%;transform-origin:0 0;animation-name:ovDotOrbit1}
+.ov-dot-2{top:50%;left:50%;transform-origin:0 0;animation-name:ovDotOrbit2;animation-direction:reverse}
+@keyframes ovDotOrbit1{0%{transform:rotate(0deg) translateX(100px)}100%{transform:rotate(360deg) translateX(100px)}}
+@keyframes ovDotOrbit2{0%{transform:rotate(0deg) translateX(150px)}100%{transform:rotate(360deg) translateX(150px)}}
+
+.outcome-list{display:flex;flex-direction:column;gap:0}
+.outcome-item{padding:32px 0;border-bottom:1px solid var(--border);display:flex;gap:20px;align-items:flex-start;transition:all .35s ease}
+.outcome-item:first-child{border-top:1px solid var(--border)}
+.outcome-item:hover{padding-left:8px}
+.outcome-item:hover .oi-num{color:var(--orange)}
+.oi-num{font-family:var(--font-mono);font-size:28px;font-weight:700;color:var(--fg3);line-height:1;min-width:44px;transition:color .35s ease}
+.oi-body h4{font-size:17px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px}
+.oi-body p{color:var(--fg2);font-size:14px;line-height:1.65;font-weight:300}
+
+/* ═══════════ INDUSTRIES ═══════════ */
+.industries{padding:var(--space) 0;background:var(--bg2)}
+.ind-intro{text-align:center;max-width:600px;margin:0 auto 64px}
+.ind-intro p{color:var(--fg2);font-size:16px;line-height:1.7;font-weight:300;margin-top:16px}
+.ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,72px)}
+.ind-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:36px 24px;text-align:center;transition:all .45s var(--ease);cursor:default;position:relative;overflow:hidden}
+.ind-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--orange);transform:scaleX(0);transition:transform .5s var(--ease)}
+.ind-card:hover::before{transform:scaleX(1)}
+.ind-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.06);border-color:transparent}
+.ind-icon{width:48px;height:48px;border-radius:12px;background:var(--orange-light);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--orange);transition:all .35s ease}
+.ind-card:hover .ind-icon{background:var(--orange);color:#fff}
+.ind-card h4{font-size:15px;font-weight:700;margin-bottom:6px;letter-spacing:-.2px}
+.ind-card p{color:var(--fg3);font-size:12px;line-height:1.5}
+
+/* ═══════════ WHY US ═══════════ */
+.why{padding:var(--space) 0}
+.why-top{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:start}
+.why-heading-wrap{position:sticky;top:120px}
+.why-heading-wrap p{color:var(--fg2);font-size:15px;line-height:1.7;font-weight:300;margin-top:20px;max-width:380px}
+.why-items{display:flex;flex-direction:column;gap:40px}
+.why-item{position:relative;padding-left:28px}
+.why-item::before{content:'';position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;border:2px solid var(--border);transition:all .35s ease}
+.why-item:hover::before{border-color:var(--orange);background:var(--orange);box-shadow:0 0 12px rgba(255,107,43,.25)}
+.why-item h4{font-size:17px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px}
+.why-item p{color:var(--fg2);font-size:14px;line-height:1.7;font-weight:300;max-width:440px}
+
+/* ═══════════ CTA ═══════════ */
+.cta{padding:var(--space) 0;text-align:center}
+.cta-inner{background:var(--fg);border-radius:20px;padding:clamp(60px,10vw,120px) clamp(24px,6vw,80px);position:relative;overflow:hidden;max-width:1200px;margin:0 auto}
+.cta-inner::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:var(--orange);opacity:.08;top:-200px;right:-150px;filter:blur(80px);pointer-events:none}
+.cta-inner::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:var(--orange);opacity:.05;bottom:-200px;left:-100px;filter:blur(80px);pointer-events:none}
+.cta-label{font-family:var(--font-mono);font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--orange);margin-bottom:24px;position:relative;z-index:2}
+.cta h2{font-family:var(--font-sans);font-size:clamp(32px,5vw,64px);font-weight:800;letter-spacing:-2px;line-height:1.1;color:#fff;margin-bottom:16px;position:relative;z-index:2}
+.cta h2 .serif{font-family:var(--font-serif);font-style:italic;font-weight:400}
+.cta-sub{color:rgba(255,255,255,.45);font-size:16px;font-weight:300;margin-bottom:40px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.7;position:relative;z-index:2}
+.btn-cta{display:inline-flex;align-items:center;gap:10px;background:var(--orange);color:#fff;padding:18px 48px;border-radius:100px;font-family:var(--font-sans);font-size:16px;font-weight:700;text-decoration:none;transition:all .35s ease;position:relative;z-index:2;letter-spacing:-.2px}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(255,107,43,.35)}
+.btn-cta .arr{transition:transform .3s ease}
+.btn-cta:hover .arr{transform:translateX(4px)}
+
+/* ═══════════ FOOTER ═══════════ */
+footer{padding:64px 0 32px;border-top:1px solid var(--border)}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;margin-bottom:48px}
+.footer-brand{font-family:var(--font-sans);font-weight:900;font-size:20px;letter-spacing:-.5px;margin-bottom:12px}
+.footer-brand .z{color:var(--orange)}.footer-brand .s{color:var(--fg)}
+.footer-desc{color:var(--fg3);font-size:13px;line-height:1.7;max-width:260px}
+.footer-col h5{font-family:var(--font-mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--fg3);margin-bottom:16px}
+.footer-col a{display:block;color:var(--fg2);text-decoration:none;font-size:13px;margin-bottom:10px;transition:color .3s ease}
+.footer-col a:hover{color:var(--orange)}
+.footer-bottom{display:flex;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap;gap:12px}
+.footer-bottom span{font-family:var(--font-mono);font-size:10px;color:var(--fg3);letter-spacing:1px}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:1024px){
+  .services-grid{grid-template-columns:1fr 1fr}
+  .services-intro{grid-template-columns:1fr}
+  .outcomes-grid{grid-template-columns:1fr;gap:48px}
+  .outcomes-visual{max-height:400px}
+  .ind-grid{grid-template-columns:1fr 1fr}
+  .why-top{grid-template-columns:1fr;gap:40px}
+  .why-heading-wrap{position:static}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .services-grid{grid-template-columns:1fr}
+  .ind-grid{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .hero{padding-top:100px;min-height:auto;padding-bottom:40px}
+  .hero-visual{width:calc(100% - 48px)}
+}
+@media(max-width:480px){
+  .ind-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div class="loader" id="loader">
+  <div class="loader-logo"><span class="z">zaak</span><span class="s">site</span></div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- Nav -->
+<nav id="nav">
+  <a href="#" class="nav-logo"><span class="z">zaak</span><span class="s">site</span></a>
+  <div class="nav-center">
+    <a href="#services">Services</a>
+    <a href="#outcomes">Results</a>
+    <a href="#industries">Industries</a>
+    <a href="#why">About</a>
+  </div>
+  <a href="#contact" class="nav-cta">Contact</a>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section class="hero" id="hero">
+  <h1 class="hero-heading">
+    <span class="line"><span class="line-inner">Websites & Systems</span></span>
+    <span class="line"><span class="line-inner">That <span class="highlight">Grow</span> Your</span></span>
+    <span class="line"><span class="line-inner">Business</span></span>
+  </h1>
+  <p class="hero-sub">We build modern websites, booking systems, and customer automation for local businesses. More customers. Less manual work.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Start Your Project</a>
+    <a href="#services" class="btn-link"><span class="ln"></span> See what we build</a>
+  </div>
+  <div class="hero-watermark">ZAAKSITE</div>
+  <div class="hero-visual">
+    <div class="hero-visual-inner">
+      <div class="hv-shape hv-1"></div>
+      <div class="hv-shape hv-2"></div>
+      <div class="hv-shape hv-3"></div>
+      <div class="hv-shape hv-4"></div>
+      <div class="hv-text">Build. Automate. Grow.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-word">Websites</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Reservations</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Automation</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Booking Systems</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Lead Capture</span><span class="marquee-dot"></span>
+    <span class="marquee-word">CRM</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Websites</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Reservations</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Automation</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Booking Systems</span><span class="marquee-dot"></span>
+    <span class="marquee-word">Lead Capture</span><span class="marquee-dot"></span>
+    <span class="marquee-word">CRM</span><span class="marquee-dot"></span>
+  </div>
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<section class="services container" id="services">
+  <div class="services-intro">
+    <div>
+      <div class="section-label sr">What we build</div>
+      <h2 class="section-heading sr sr-d1">Websites, booking systems, and <span class="serif orange">smart automation</span></h2>
+    </div>
+    <p class="sr sr-d2">Everything your business needs to look professional online, capture leads, and serve customers without the manual work.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card sr sr-d1">
+      <div class="svc-num">01</div>
+      <div class="svc-title">Business Websites</div>
+      <div class="svc-text">Fast, responsive, conversion-focused websites that establish credibility and turn visitors into paying customers.</div>
+      <div class="svc-arrow">&nearr;</div>
+    </div>
+    <div class="svc-card sr sr-d2">
+      <div class="svc-num">02</div>
+      <div class="svc-title">Reservation Systems</div>
+      <div class="svc-text">Integrated booking platforms with real-time availability, automated confirmations, and easy calendar management.</div>
+      <div class="svc-arrow">&nearr;</div>
+    </div>
+    <div class="svc-card sr sr-d3">
+      <div class="svc-num">03</div>
+      <div class="svc-title">WhatsApp Automation</div>
+      <div class="svc-text">Automated messaging flows that respond to inquiries, send reminders, and follow up after appointments.</div>
+      <div class="svc-arrow">&nearr;</div>
+    </div>
+    <div class="svc-card sr sr-d1">
+      <div class="svc-num">04</div>
+      <div class="svc-title">Lead Capture</div>
+      <div class="svc-text">Smart forms and landing pages that capture contacts, qualify leads, and feed them into your workflow.</div>
+      <div class="svc-arrow">&nearr;</div>
+    </div>
+    <div class="svc-card sr sr-d2">
+      <div class="svc-num">05</div>
+      <div class="svc-title">Customer Follow-Up</div>
+      <div class="svc-text">Automated email and message sequences that keep your business top-of-mind and bring customers back.</div>
+      <div class="svc-arrow">&nearr;</div>
+    </div>
+    <div class="svc-card sr sr-d3">
+      <div class="svc-num">06</div>
+      <div class="svc-title">Business CRM</div>
+      <div class="svc-text">Simple customer management built for small businesses. Track contacts, bookings, and conversations in one place.</div>
+      <div class="svc-arrow">&nearr;</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ OUTCOMES ═══════════ -->
+<section class="outcomes container" id="outcomes">
+  <div class="outcomes-grid">
+    <div class="outcomes-visual sr">
+      <div class="outcomes-visual-inner">
+        <div class="ov-ring ov-r1"></div>
+        <div class="ov-ring ov-r2"></div>
+        <div class="ov-ring ov-r3"></div>
+        <div class="ov-center"></div>
+        <div class="ov-dot ov-dot-1"></div>
+        <div class="ov-dot ov-dot-2"></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label sr">The results</div>
+      <h2 class="section-heading sr sr-d1" style="margin-bottom:40px">What changes when your <span class="serif orange">systems</span> work for you</h2>
+      <div class="outcome-list">
+        <div class="outcome-item sr sr-d1">
+          <div class="oi-num">01</div>
+          <div class="oi-body">
+            <h4>More bookings, automatically</h4>
+            <p>Customers book online around the clock without phone calls or back-and-forth. Your calendar fills itself.</p>
+          </div>
+        </div>
+        <div class="outcome-item sr sr-d2">
+          <div class="oi-num">02</div>
+          <div class="oi-body">
+            <h4>Less manual work</h4>
+            <p>Automated confirmations, reminders, and follow-ups eliminate the tasks that consume your time every day.</p>
+          </div>
+        </div>
+        <div class="outcome-item sr sr-d3">
+          <div class="oi-num">03</div>
+          <div class="oi-body">
+            <h4>Faster customer response</h4>
+            <p>Instant replies through WhatsApp and web automation. No inquiry goes unanswered, no customer left waiting.</p>
+          </div>
+        </div>
+        <div class="outcome-item sr sr-d4">
+          <div class="oi-num">04</div>
+          <div class="oi-body">
+            <h4>A premium image</h4>
+            <p>A polished website and smooth experience signal professionalism. First impressions become conversions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ INDUSTRIES ═══════════ -->
+<section class="industries" id="industries">
+  <div class="ind-intro">
+    <div class="section-label sr" style="justify-content:center">Who we work with</div>
+    <h2 class="section-heading sr sr-d1" style="text-align:center">Built for <span class="serif orange">local businesses</span></h2>
+    <p class="sr sr-d2">From restaurants to clinics, we build digital systems tailored to how your business actually works.</p>
+  </div>
+  <div class="ind-grid">
+    <div class="ind-card sr sr-d1">
+      <div class="ind-icon">RS</div>
+      <h4>Restaurants</h4>
+      <p>Menus, reservations, online ordering</p>
+    </div>
+    <div class="ind-card sr sr-d2">
+      <div class="ind-icon">BR</div>
+      <h4>Barber Shops</h4>
+      <p>Appointments, services, stylist profiles</p>
+    </div>
+    <div class="ind-card sr sr-d3">
+      <div class="ind-icon">BT</div>
+      <h4>Beauty & Spa</h4>
+      <p>Treatment booking, gift cards, loyalty</p>
+    </div>
+    <div class="ind-card sr sr-d4">
+      <div class="ind-icon">CL</div>
+      <h4>Clinics</h4>
+      <p>Patient booking, intake forms</p>
+    </div>
+    <div class="ind-card sr sr-d5">
+      <div class="ind-icon">FT</div>
+      <h4>Fitness & Gyms</h4>
+      <p>Class scheduling, memberships</p>
+    </div>
+    <div class="ind-card sr sr-d6">
+      <div class="ind-icon">RT</div>
+      <h4>Retail Shops</h4>
+      <p>E-commerce, product catalogs</p>
+    </div>
+    <div class="ind-card sr sr-d7">
+      <div class="ind-icon">HT</div>
+      <h4>Hotels & B&Bs</h4>
+      <p>Room booking, availability calendars</p>
+    </div>
+    <div class="ind-card sr sr-d8">
+      <div class="ind-icon">SV</div>
+      <h4>Service Providers</h4>
+      <p>Quotes, scheduling, client portals</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WHY US ═══════════ -->
+<section class="why container" id="why">
+  <div class="why-top">
+    <div class="why-heading-wrap">
+      <div class="section-label sr">Why us</div>
+      <h2 class="section-heading sr sr-d1">Built with <span class="serif orange">precision</span>, delivered with care</h2>
+      <p class="sr sr-d2">We do not sell templates. Every project is designed and built specifically for your business, your customers, and your goals.</p>
+    </div>
+    <div class="why-items">
+      <div class="why-item sr sr-d1">
+        <h4>Custom-built, not templated</h4>
+        <p>Your website reflects who you are. No recycled layouts, no cookie-cutter themes. Original design for every client.</p>
+      </div>
+      <div class="why-item sr sr-d2">
+        <h4>Fast delivery</h4>
+        <p>Most projects are designed, built, and launched within two to three weeks. You see real progress from day one.</p>
+      </div>
+      <div class="why-item sr sr-d3">
+        <h4>Built for performance</h4>
+        <p>Speed matters. Our sites load fast, rank well on search engines, and work perfectly on every device.</p>
+      </div>
+      <div class="why-item sr sr-d4">
+        <h4>Simple for you to manage</h4>
+        <p>You do not need to be technical. We build everything so you can update content and manage bookings on your own.</p>
+      </div>
+      <div class="why-item sr sr-d5">
+        <h4>Ongoing support</h4>
+        <p>We do not disappear after launch. Updates, changes, troubleshooting. We stay available so your systems keep running.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section class="cta container" id="contact">
+  <div class="cta-inner">
+    <div class="cta-label sr">Ready to start</div>
+    <h2 class="sr sr-d1">Let's build something<br>your business <span class="serif">deserves</span></h2>
+    <p class="cta-sub sr sr-d2">Tell us about your business and we will design the right website and systems to help you grow.</p>
+    <a href="mailto:hello@zaaksite.com" class="btn-cta sr sr-d3">Start Your Project <span class="arr">&rarr;</span></a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><span class="z">zaak</span><span class="s">site</span></div>
+        <p class="footer-desc">Websites and systems for local businesses. Custom-built to help you get more customers and run smoother.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navigation</h5>
+        <a href="#hero">Home</a>
+        <a href="#services">Services</a>
+        <a href="#outcomes">Results</a>
+        <a href="#industries">Industries</a>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#services">Websites</a>
+        <a href="#services">Booking Systems</a>
+        <a href="#services">Automation</a>
+        <a href="#services">Lead Capture</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="mailto:hello@zaaksite.com">hello@zaaksite.com</a>
+        <a href="https://zaaksite.com">zaaksite.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 ZaakSite. All rights reserved.</span>
+      <span>Crafted with precision.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ═══════════ LOADER ═══════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('done');
+    animateHero();
+  }, 2400);
+});
+
+/* ═══════════ HERO ANIMATION ═══════════ */
+function animateHero() {
+  const lines = document.querySelectorAll('.hero-heading .line-inner');
+  lines.forEach((ln, i) => setTimeout(() => ln.classList.add('anim'), i * 150));
+  setTimeout(() => {
+    document.querySelector('.hero-sub').classList.add('anim');
+    document.querySelector('.hero-actions').classList.add('anim');
+    document.querySelector('.hero-watermark').classList.add('anim');
+    document.querySelector('.hero-visual').classList.add('anim');
+  }, 500);
+}
+
+/* ═══════════ SCROLL REVEAL ═══════════ */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+
+/* ═══════════ NAV SCROLL ═══════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ═══════════ SMOOTH SCROLL ═══════════ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
