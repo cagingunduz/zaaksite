@@ -53,11 +53,12 @@ nav.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit
 .nav-center a:hover::after{width:100%}
 .nav-cta{background:var(--fg);color:#fff;padding:10px 28px;border-radius:100px;font-size:13px;font-weight:600;text-decoration:none;transition:all .3s ease;border:none;cursor:pointer;letter-spacing:.3px}
 .nav-cta:hover{background:var(--orange)}
+.nav-right{display:flex;align-items:center;gap:12px}
 .lang-switcher{display:none;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;letter-spacing:1.5px;font-weight:500}
-.lang-current{color:var(--fg3);text-transform:uppercase}
+.lang-opt{color:var(--fg3);text-decoration:none;text-transform:uppercase;transition:color .25s ease;cursor:pointer;padding:4px 0}
+.lang-opt:hover{color:var(--orange)}
+.lang-opt.active{color:var(--fg);font-weight:700}
 .lang-sep{color:var(--border);font-size:13px;line-height:1}
-.lang-en{color:var(--fg2);text-decoration:none;text-transform:uppercase;transition:color .25s ease;cursor:pointer;padding:4px 0}
-.lang-en:hover{color:var(--orange)}
 @media(max-width:768px){.nav-center{display:none}}
 
 /* ═══════════ REVEALS ═══════════ */
@@ -256,12 +257,14 @@ footer{padding:64px 0 32px;border-top:1px solid var(--border)}
     <a href="#industries" data-i18n="nav-industries">Industries</a>
     <a href="#why" data-i18n="nav-about">About</a>
   </div>
-  <div class="lang-switcher" id="lang-switcher">
-    <span class="lang-current" id="lang-current"></span>
-    <span class="lang-sep">|</span>
-    <a class="lang-en" id="lang-en">EN</a>
+  <div class="nav-right">
+    <div class="lang-switcher" id="lang-switcher">
+      <a class="lang-opt" id="lang-native"></a>
+      <span class="lang-sep">|</span>
+      <a class="lang-opt" id="lang-en">EN</a>
+    </div>
+    <a href="#contact" class="nav-cta" data-i18n="nav-cta">Contact</a>
   </div>
-  <a href="#contact" class="nav-cta" data-i18n="nav-cta">Contact</a>
 </nav>
 
 <!-- ═══════════ HERO ═══════════ -->
@@ -733,6 +736,7 @@ async function detectCountry() {
 }
 
 let activeLang = 'en';
+let nativeLang  = 'en';
 
 function applyLang(lang) {
   const t = translations[lang] || translations.en;
@@ -744,23 +748,28 @@ function applyLang(lang) {
   document.documentElement.lang = lang;
   activeLang = lang;
 
-  const switcher = document.getElementById('lang-switcher');
-  const current  = document.getElementById('lang-current');
-  if (lang !== 'en') {
-    current.textContent = lang.toUpperCase();
-    switcher.style.display = 'flex';
-  } else {
-    switcher.style.display = 'none';
-  }
+  const nativeEl = document.getElementById('lang-native');
+  const enEl     = document.getElementById('lang-en');
+  nativeEl.classList.toggle('active', lang === nativeLang);
+  enEl.classList.toggle('active', lang === 'en');
 }
 
-document.getElementById('lang-en').addEventListener('click', () => applyLang('en'));
-
 detectCountry().then(code => {
-  if (code === 'NL') applyLang('nl');
-  else if (code === 'SK') applyLang('sk');
-  else applyLang('en');
+  if (code === 'NL') nativeLang = 'nl';
+  else if (code === 'SK') nativeLang = 'sk';
+
+  if (nativeLang !== 'en') {
+    const nativeEl = document.getElementById('lang-native');
+    nativeEl.textContent = nativeLang.toUpperCase();
+    document.getElementById('lang-switcher').style.display = 'flex';
+    applyLang(nativeLang);
+  } else {
+    applyLang('en');
+  }
 });
+
+document.getElementById('lang-native').addEventListener('click', () => applyLang(nativeLang));
+document.getElementById('lang-en').addEventListener('click',     () => applyLang('en'));
 
 /* ═══════════ LOADER ═══════════ */
 window.addEventListener('load', () => {
